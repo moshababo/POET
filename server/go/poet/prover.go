@@ -126,13 +126,13 @@ func ComputeLabel(node *BinaryID, cOpts *ComputeOpts) []byte {
 	//result := cOpts.hash.HashVals(cOpts.commitment, parentLabels, node.Encode())
 	debugLog.Printf(
 		"Inputs: %v %v %v\n",
-		hex.EncodeToString(cOpts.commitmentHash),
+		hex.EncodeToString(cOpts.commitment),
 		hex.EncodeToString(node.Encode()),
 		hex.EncodeToString(parentLabels),
 	)
 
 	result := cOpts.hash.HashVals(
-		cOpts.commitmentHash,
+		cOpts.commitment,
 		node.Encode(),
 		parentLabels)
 
@@ -282,7 +282,8 @@ func (p *Prover) CalcCommitProof(commitment []byte) error {
 	cOpts.hash = p.hash
 	cOpts.store = p.store
 	cOpts.commitmentHash = cOpts.hash.HashVals(commitment)
-	debugLog.Println("CommitmentHash: ", hex.EncodeToString(cOpts.commitmentHash))
+	cOpts.commitment = commitment
+	debugLog.Println("Commitment: ", hex.EncodeToString(cOpts.commitment))
 	p.commitment = commitment
 	p.commitmentHash = cOpts.commitmentHash
 	node, err := NewBinaryID(0, 0)
